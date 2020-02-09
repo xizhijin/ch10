@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace指用户自定义的命名空间 -->
+<mapper namespace="com.ssm.demo.mapper.ClazzMapper">
+	<!-- 映射Clazz对象的resultMap -->
+	<resultMap type="com.ssm.demo.po.Clazz" id="clazzResultMap">
+		<id property="id" column="id"/>
+		<result property="code" column="code"/>
+		<result property="name" column="name"/>
+		<!-- 一对多关联映射:collection fetchType="lazy"表示懒加载  -->
+		<collection property="students" javaType="ArrayList" ofType="com.ssm.demo.po.Student" column="id" select="com.ssm.demo.mapper.StudentMapper.selectStudentByClazzId" fetchType="lazy" />
+	</resultMap>
+	
+	<!-- 根据id查询班级信息，返回resultMap -->
+	<select id="selectClazzById" parameterType="int" resultMap="clazzResultMap">
+		select * from tb_clazz where id = #{id}
+	</select>
+	
+</mapper>
